@@ -102,12 +102,13 @@ def dashboard():
                            userinfo=session['profile'],
                            userinfo_pretty=json.dumps(session['jwt_payload'],indent=4), ticketInfoDto=ticketInfoDto)
 
-@app.route('/logout')
+@app.route('/logout', methods=['GET'])
 def logout():
-    # Clear session stored data
-    db_session.clear()
+    # Clear flask session stored data
+    session.clear()
+    
     # Redirect user to logout endpoint
-    params = {'returnTo': url_for('home', _external=True), 'client_id': 'Zt9tC9dhE4oGIqS5JDyUbbVg6ykZ0zVY'}
+    params = {'returnTo': url_for('hello', _external=True), 'client_id': 'Zt9tC9dhE4oGIqS5JDyUbbVg6ykZ0zVY'}
     return redirect(auth0.api_base_url + '/v2/logout?' + urlencode(params))
 
 @app.route('/dashboard/tickets/new', methods=['GET', 'POST'])
