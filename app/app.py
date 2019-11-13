@@ -16,6 +16,7 @@ from flask import flash
 from authlib.flask.client import OAuth
 from six.moves.urllib.parse import urlencode
 from models.ticket import Ticket
+from DTO.ticket_info_dto import TicketInfo
 from forms.ticket_form import TicketForm
 from flask import g
 import os.path
@@ -93,9 +94,13 @@ def login():
 @app.route('/dashboard')
 @requires_auth
 def dashboard():
+    userId = session['profile']['user_id'] # move this to ticket count func
+    ticketCount = getTicketCount(userId)
+    ticketInfoDto = TicketInfo(ticketCount)
+    
     return render_template('/dashboard/index.html',
                            userinfo=session['profile'],
-                           userinfo_pretty=json.dumps(session['jwt_payload'], indent=4))
+                           userinfo_pretty=json.dumps(session['jwt_payload'],indent=4), ticketInfoDto=ticketInfoDto)
 
 @app.route('/logout')
 def logout():
@@ -182,10 +187,11 @@ def after_req(resp):
 
 def getTickets(userId):
     tickets = g.db.query(Ticket).filter(Ticket.userId == userId)
-    for ticket in tickets:
-        print(ticket.description)
     return tickets
 
+def getTicketCount(userId):
+    count = g.db.query(Ticket).filter(Ticket.userId == userId).count()
+    return count
     
 if __name__ == '__main__':
     app.run(debug=True)
