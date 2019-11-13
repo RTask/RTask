@@ -43,6 +43,22 @@ auth0 = oauth.register(
 # check if database/tables exist
 init_db()
 
+def requires_auth(f):
+  @wraps(f)
+  def decorated(*args, **kwargs):
+    if 'profile' not in session:
+      # Redirect to Login page here
+      return redirect('/')
+    return f(*args, **kwargs)
+
+  return decorated
+
+@app.route('/profile')
+@requires_auth
+def profile():
+    return render_template('/dashboard/profile/index.html', userinfo=session['profile'],
+                           userinfo_pretty=json.dumps(session['jwt_payload'], indent=4))
+
 @app.route('/setup')
 def setup():
     return render_template('/setup/index.html')
@@ -73,15 +89,6 @@ def callback_handling():
 def login():
     return auth0.authorize_redirect(redirect_uri='http://localhost:5000/callback')
 
-def requires_auth(f):
-  @wraps(f)
-  def decorated(*args, **kwargs):
-    if 'profile' not in session:
-      # Redirect to Login page here
-      return redirect('/')
-    return f(*args, **kwargs)
-
-  return decorated
 
 @app.route('/dashboard')
 @requires_auth
