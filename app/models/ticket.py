@@ -2,6 +2,7 @@ import sqlalchemy as sa
 from db import Base
 
 class Ticket(Base):
+    
     __tablename__ = 'ticket'
 
     id = sa.Column(sa.BigInteger, autoincrement=True, primary_key=True)

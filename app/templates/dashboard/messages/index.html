@@ -1,0 +1,31 @@
+{% extends "dashboard/base.html" %}
+    {% block content %}
+        {% if not tickets %}
+            <tr>
+                <td>There are no messages.
+                    <a href="{{ '/dashboard/messages/new' }}">Create new message</a>
+                </td>
+            </tr>
+        {% else %}
+        <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Sent To</th>
+            <th scope="col">Title</th>
+            <th scope="col">Description</th> 
+        </tr>
+        </thead>
+        <tbody>
+            {% for message in messages %}
+            <tr>
+                <th scope="row">{{message.sentTo}}</th>
+                <td>
+                    <a href="{{ '/dashboard/message/%s'%message.id }}">{{message.title}}</a>
+                </td>
+                <td>{{message.description}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        </table>
+        {% endif %}
+{% endblock %}
