@@ -16,6 +16,7 @@ from flask import flash
 from authlib.flask.client import OAuth
 from six.moves.urllib.parse import urlencode
 from models.ticket import Ticket
+from models.message import Message
 from DTO.ticket_info_dto import TicketInfo
 from forms.ticket_form import TicketForm
 from flask import g
@@ -174,6 +175,22 @@ def edit_ticket(ticket_id):
     ticket = g.db.query(Ticket).get(ticket_id)
     return render_template('/dashboard/tickets/edit.html', ticket=ticket)
 
+# begin messages endpoints
+@app.route('/dashboard/messages')
+@requires_auth
+def messages():
+    return render_template('/dashboard/messages/index.html')
+
+@app.route('/dashboard/messages/new', methods=['GET', 'POST'])
+@requires_auth
+def message_new():
+    if request.method == 'POST':
+        message = getMessageFromForm(request)
+        print(message)    
+    return render_template('/dashboard/messages/new.html')
+    
+# end messages endpoints
+
 @app.before_request
 def before_req():
     g.db = db_session()
@@ -193,6 +210,16 @@ def getTickets(userId):
 def getTicketCount(userId):
     count = g.db.query(Ticket).filter(Ticket.userId == userId).count()
     return count
-    
+
+def getMessageFromForm(request):
+    title = request.form['title']
+    description = request.form['description']
+    sentBy = request.form['sendTo']
+    sentTo = session['profile']['user_id'] # user who created message is the one sending
+    userId = session['profile']['user_id']
+
+    message = Message(title, description, userId, sentBy, sentTo)
+    return message
+
 if __name__ == '__main__':
     app.run(debug=True)

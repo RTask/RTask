@@ -1,0 +1,26 @@
+{% extends "dashboard/base.html" %}
+{% import 'macros/macros.html' as macros %}
+{% block content %}
+    <h1>New Message</h1>
+    <form method="POST">
+        <div class="form-group">
+            <label for="exampleFormControlSelect1">To:</label>
+            <select class="form-control" id="exampleFormControlSelect1" name="sendTo">
+                <option>Michael</option>
+                <option>Sandy</option>
+                <option>Drew</option>
+                <option>Alex</option>
+                <option>Gage</option>
+            </select>
+        </div>
+        <div class='form-group'>
+            <label for='title'>Title</label>
+            <input type='text' id='title' name='title' class='form-control'/>
+        </div>
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea class="form-control" name='description' id="description" rows="3"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Send Message</button>
+    </form>
+{% endblock %}
