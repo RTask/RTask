@@ -1,6 +1,7 @@
 {% extends "dashboard/base.html" %}
     {% block content %}
-        {% if not tickets %}
+        <h1>Message Center</h1>
+        {% if not messages %}
             <tr>
                 <td>There are no messages.
                     <a href="{{ '/dashboard/messages/new' }}">Create new message</a>

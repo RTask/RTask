@@ -21,7 +21,7 @@ def upgrade():
         'messages',
         sa.Column('id', sa.Integer, primary_key=True),
         sa.Column('title', sa.String(100), nullable=False),
-        sa.Column('descripton', sa.Unicode(500), nullable=False),
+        sa.Column('description', sa.Unicode(500), nullable=False),
         sa.Column('userId', sa.String(50), nullable=False),
         sa.Column('sentBy', sa.String(50), nullable=False),
         sa.Column('sentTo', sa.String(50), nullable=False)

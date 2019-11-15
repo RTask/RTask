@@ -98,10 +98,13 @@ def dashboard():
     userId = session['profile']['user_id'] # move this to ticket count func
     ticketCount = getTicketCount(userId)
     ticketInfoDto = TicketInfo(ticketCount)
+    message_count = getNewMessageCount()
     
     return render_template('/dashboard/index.html',
                            userinfo=session['profile'],
-                           userinfo_pretty=json.dumps(session['jwt_payload'],indent=4), ticketInfoDto=ticketInfoDto)
+                           userinfo_pretty=json.dumps(session['jwt_payload'],indent=4),
+                           ticketInfoDto=ticketInfoDto,
+                           message_count=message_count)
 
 @app.route('/logout', methods=['GET'])
 def logout():
@@ -179,17 +182,30 @@ def edit_ticket(ticket_id):
 @app.route('/dashboard/messages')
 @requires_auth
 def messages():
-    return render_template('/dashboard/messages/index.html')
+    messages = getMessages()
+    return render_template('/dashboard/messages/index.html', messages=messages)
 
 @app.route('/dashboard/messages/new', methods=['GET', 'POST'])
 @requires_auth
 def message_new():
     if request.method == 'POST':
         message = getMessageFromForm(request)
-        print(message)    
+        g.db.add(message)
+        g.db.commit()
+        flash('message sent')
+    
     return render_template('/dashboard/messages/new.html')
     
 # end messages endpoints
+
+# begin endpoints for orders
+def get_orders():
+    return render_template('/dashbaord/orders/index.html')
+# end enpoints for orders
+
+# begin endpoints for tasks
+
+# end endpoints for tasks
 
 @app.before_request
 def before_req():
@@ -203,6 +219,7 @@ def after_req(resp):
         pass
     return resp
 
+
 def getTickets(userId):
     tickets = g.db.query(Ticket).filter(Ticket.userId == userId)
     return tickets
@@ -211,11 +228,21 @@ def getTicketCount(userId):
     count = g.db.query(Ticket).filter(Ticket.userId == userId).count()
     return count
 
+def getMessages():
+    userId = session['profile']['user_id']
+    messages = g.db.query(Message).filter(Message.userId == userId)
+    return messages
+    
+def getNewMessageCount():
+    userId = session['profile']['user_id']
+    count = g.db.query(Message).filter(Message.userId == userId).count()
+    return count
+
 def getMessageFromForm(request):
     title = request.form['title']
     description = request.form['description']
-    sentBy = request.form['sendTo']
-    sentTo = session['profile']['user_id'] # user who created message is the one sending
+    sentBy = session['profile']['user_id'] # user who created message is the one sending
+    sentTo = request.form['sendTo']
     userId = session['profile']['user_id']
 
     message = Message(title, description, userId, sentBy, sentTo)
