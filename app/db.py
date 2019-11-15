@@ -10,6 +10,8 @@ db_session = sessionmaker(bind=engine)
 
 # import models after base is declared
 from models import ticket
+from models import status
+from models import message
 
 def init_db():
     try:

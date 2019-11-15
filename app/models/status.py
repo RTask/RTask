@@ -1,4 +1,5 @@
 from db import Base
+import sqlalchemy as sa
 
 class Status(Base):
     __tablename__ = 'status'
