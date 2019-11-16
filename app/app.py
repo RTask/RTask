@@ -3,7 +3,8 @@ import json
 import config
 from os import environ as environ
 from werkzeug.exceptions import HTTPException
-
+from werkzeug.utils import secure_filename
+import os
 from dotenv import load_dotenv, find_dotenv
 from flask import Flask
 from flask import jsonify
@@ -25,9 +26,14 @@ from os import path
 from db import db_session, init_db
 from models.ticket import Ticket
 
+# pull from config 
+UPLOAD_FOLDER = 'uploads'
+ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 app = Flask(__name__)
 app.secret_key = 'SlumDog'
 oauth = OAuth(app)
+
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 # move to config file
 auth0 = oauth.register(
@@ -127,10 +133,13 @@ def ticket():
         form = TicketForm(obj=ticket)
         return render_template('/dashboard/tickets/new.html', form=form, success=success)
     
+    # if files then upload
+    # assign file path to ticket 
+    upload_file(request)
+
     ticket.title = request.form['title']
     ticket.description = request.form['description']
     ticket.userId = session['profile']['user_id']
-    
     g.db.add(ticket)
     g.db.commit()
     success = True
@@ -247,6 +256,30 @@ def getMessageFromForm(request):
 
     message = Message(title, description, userId, sentBy, sentTo)
     return message
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+def upload_file(request):
+    if request.method == 'POST':
+        # check if the post request has the file part
+        if 'file' not in request.files:
+            flash('No file part')
+            return redirect(request.url)
+        file = request.files['file']
+        # if user does not select file, browser also
+        # submit an empty part without filename
+        if file.filename == '':
+            flash('No selected file')
+            return redirect(request.url)
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            #file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            path = os.path.join(config.file_path, filename)
+            file.save(path)
+            return path
+    return ''
 
 if __name__ == '__main__':
     app.run(debug=True)
