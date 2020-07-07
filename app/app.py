@@ -25,6 +25,7 @@ import os.path
 from os import path
 from db import db_session, init_db
 from models.ticket import Ticket
+import base64
 
 # pull from config 
 UPLOAD_FOLDER = 'uploads'
@@ -137,9 +138,14 @@ def ticket():
     # assign file path to ticket 
     upload_file(request)
 
+    # TODO: we need to sanatize files to increase security. 
+    # for example, we are using an original filename here 
+    # malicious filenames could be sent to the server.
+    ticket.image = request.files['file'].filename
     ticket.title = request.form['title']
     ticket.description = request.form['description']
     ticket.userId = session['profile']['user_id']
+
     g.db.add(ticket)
     g.db.commit()
     success = True
@@ -160,7 +166,10 @@ def ticket_list():
 @app.route('/dashboard/tickets/<int:ticket_id>', methods=['GET'])  
 def get_ticket(ticket_id):
     ticket = g.db.query(Ticket).get(ticket_id)
-    return render_template('/dashboard/tickets/view.html', ticket=ticket)
+    image = encode_image(ticket.image)
+    print(image)
+
+    return render_template('/dashboard/tickets/view.html', ticket=ticket, image=image)
 
 @app.route('/dashboard/tickets/edit/<int:ticket_id>', methods=['POST'])
 @requires_auth
@@ -276,10 +285,19 @@ def upload_file(request):
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             #file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            path = os.path.join(config.file_path, filename)
+            path = getPath(filename)
             file.save(path)
             return path
     return ''
+
+def encode_image(image):
+    path = getPath("asp.net_core_web_app.png")
+    with open(path, "rb") as image_file:
+        encoded_string = base64.b64encode(image_file.read())
+    return encoded_string
+
+def getPath(fileName):
+    return os.path.join(config.file_path, fileName)
 
 if __name__ == '__main__':
     app.run(debug=True)

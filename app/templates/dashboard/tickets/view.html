@@ -1,22 +1,27 @@
 {% extends "dashboard/base.html" %}
 {% block content %}
-    <!-- use url for https://flask.palletsprojects.com/en/1.1.x/tutorial/templates/-->
-    <button 
+    <div class="row justify-content-center">
+        <div class="col-8">
+            <!-- use url for https://flask.palletsprojects.com/en/1.1.x/tutorial/templates/-->
+        <button 
         type="button" 
         class="btn btn-outline-info m-3">
-        <a href="/dashboard/tickets">
-            Back
-        </a>
-    </button>
+            <a href="/dashboard/tickets">
+                Back
+            </a>
+        </button>
 
-    <div class="card">
-        <div class="card-header">
-            Ticket # {{ticket.id}}
+        <div class="card">
+            <div class="card-header">
+                Ticket # {{ticket.id}} 
+            </div>
+            <div class="card-body">
+                <img src="{{'data:image/png;base64,%s'%image}}" style="height: 100px; width: 100px;" />
+                <h5 class="card-title">{{ticket.title}}</h5>
+                <p class="card-text">{{ticket.description}}</p>
+                <a href="{{ '/dashboard/tickets/edit/%s'%ticket.id }}" class="btn btn-primary">Edit</a>
+            </div>
         </div>
-        <div class="card-body">
-          <h5 class="card-title">{{ticket.title}}</h5>
-          <p class="card-text">{{ticket.description}}</p>
-          <a href="{{ '/dashboard/tickets/edit/%s'%ticket.id }}" class="btn btn-primary">Edit</a>
         </div>
     </div>
 {% endblock %}  

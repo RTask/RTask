@@ -12,6 +12,7 @@ class Ticket(Base):
     userId = sa.Column(sa.String(50), nullable=False)
     statusId = sa.Column(sa.BigInteger, sa.ForeignKey('status.id'))
     status = relationship("Status")
+    image = sa.Column(sa.String(100), nullable=True)
    
 
     
