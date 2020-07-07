@@ -8,3 +8,4 @@ sqlalchemy_utils
 psycopg2-binary
 WTForms-Alchemy
 alembic
+werkzeug==0.16.0
