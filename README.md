@@ -1,3 +1,6 @@
+# Hacktoberfest
+This project is a fresh Django project. It should work like any other ticketing system. This is the same project I mentioned in my hacktoberfest video https://youtu.be/a7eTy9lPeJ4
+
 # RTask
 RTask is a ticketing system written in python on top of Django.
 ## Running (simplified)
