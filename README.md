@@ -12,5 +12,8 @@ RTask is a ticketing system written in python on top of Django.
 2. Install dependencies.
 `python3 -m pip install -r requirements.txt`
 
-3. Run app
+3. Virtual environment is activated.
+`.bin/activate`
+
+4. Run app
 `python3 rtask/manage.py runserver`
