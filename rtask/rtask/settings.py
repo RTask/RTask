@@ -76,12 +76,14 @@ WSGI_APPLICATION = 'rtask.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'mysql.connector.django',
         'NAME': 'NAME DB',
         'USER': 'USER DB',
         'PASSWORD': 'PSS DB',
         'HOST': 'localhost',
         'PORT': '3306',
+        'OPTIONS': {
+            'autocommit': True,
     }
 }
 
