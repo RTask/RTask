@@ -26,6 +26,7 @@ SECRET_KEY = 'qgw%q&l*_*^pa5r&%82cz4&-71!lhhfe3ujc!z(j(y27@50iiz'
 DEBUG = True
 
 ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['YOUR IP HERE'] 
 
 
 # Application definition
@@ -72,11 +73,20 @@ WSGI_APPLICATION = 'rtask.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
+#pip install pymysql
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'mysql.connector.django',
+        'NAME': 'NAME DB',
+        'USER': 'USER DB',
+        'PASSWORD': 'PSS DB',
+        'HOST': 'localhost',
+        'PORT': '3306',
+        'OPTIONS': {
+            'autocommit': True,
     }
 }
 
