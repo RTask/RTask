@@ -14,3 +14,4 @@ RTask is a ticketing system written in python on top of Django.
 
 3. Run app
 `python3 rtask/manage.py runserver`
+4. If you face pip installation problem then you use the Pip3 with python3
