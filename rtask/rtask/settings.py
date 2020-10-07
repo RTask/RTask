@@ -76,10 +76,10 @@ WSGI_APPLICATION = "rtask.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
-        "NAME": "",  # Database Name
-        "USER": "",  # username for the database
-        "PASSWORD": "",  # Password for Database
-        "HOST": "localhost",  # database host
+        "NAME": "",
+        "USER": "",
+        "PASSWORD": "",
+        "HOST": "localhost",
         "PORT": "3306",
         "OPTIONS": {
             "init_command": "SET sql_mode='STRICT_TRANS_TABLES'",  # recommended by the Django Docs with MySQL
