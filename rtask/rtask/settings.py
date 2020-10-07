@@ -69,25 +69,13 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "rtask.wsgi.application"
 
-
-# Database
-# https://docs.djangoproject.com/en/3.1/ref/settings/#databases
-
-# if DEBUG:
-#     DATABASES = {
-#         "default": {
-#             "ENGINE": "django.db.backends.sqlite3",
-#             "NAME": BASE_DIR / "db.sqlite3",
-#         }
-#     }
-# else:
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
-        "NAME": "",  # TODO: Database Name
-        "USER": "",  # TODO: username for the database
-        "PASSWORD": "",  # TODO : Password for Database
-        "HOST": "localhost",  # TODO: replace this with hostname in production
+        "NAME": "",
+        "USER": "",
+        "PASSWORD": "",
+        "HOST": "localhost",
         "PORT": "3306",
         "OPTIONS": {
             "init_command": "SET sql_mode='STRICT_TRANS_TABLES'",  # recommended by the Django Docs with MySQL
