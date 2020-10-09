@@ -76,8 +76,8 @@ WSGI_APPLICATION = "rtask.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
-        "NAME": "",
-        "USER": "",
+        "NAME": "iautouploads",
+        "USER": "root",
         "PASSWORD": "",
         "HOST": "localhost",
         "PORT": "3306",
