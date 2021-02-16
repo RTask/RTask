@@ -1,3 +1,5 @@
+# Community
+Discord: https://discord.gg/zrBckFUcqG
 # Hacktoberfest
 This project is a fresh Django project. It should work like any other ticketing system. This is the same project I mentioned in my hacktoberfest video https://youtu.be/a7eTy9lPeJ4
 
